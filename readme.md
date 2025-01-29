@@ -15,3 +15,18 @@ This project is focused on building a simple image classification model to ident
 - Install the required dependencies:
   ```bash
   npm install @tensorflow/tfjs
+
+### 2. Brief Tutorial
+
+1️⃣ Image Collection
+
+First, use get_images.js because, you will need to capture images of the "Mines" game icon that you want to detect on the pages. The best way to do this is to save the images you see in the user interface.
+
+    **Image Capture:**
+        - Open the page where the "Mines" game is listed.
+        - Take a screenshot or download the icon image.
+        - Ensure the image is clear and representative of the icon you want to detect.
+
+    **Organize the Images:**
+        - Save the image with a descriptive name, such as `mines_icon.jpg`.
+        - Place this image in a directory where the code can access it.
