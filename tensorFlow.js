@@ -12,11 +12,28 @@ async function carregarModelo() {
 
 // Classificar uma imagem
 async function classificarImagem(imgElement, modelo) {
-  const predictions = await modelo.classify(imgElement);
-  console.log("Predições:", predictions);
+  // Convert the image to a tensor that matches your model's input layer
+  const tensorImg = tf.browser.fromPixels(imgElement).toFloat();
+  const resized = tf.image.resizeBilinear(tensorImg, [yourModelInputHeight, yourModelInputWidth]);
+  const batchedImg = resized.expandDims(0);
+  const normalizedImg = batchedImg.div(255.0); // Normalize if your model expects normalized input
 
-  // Verifica se "Mines" está nas previsões
-  return predictions.some((p) => p.className.includes("Mines") && p.probability > 0.5);
+  const predictions = await modelo.predict(normalizedImg);
+
+  // Assuming your model outputs a single class probability or an array of probabilities
+  const output = await predictions.data();
+  
+  // Here, adjust based on how your model outputs results
+  // For example, if it's binary classification (Mines or Not Mines):
+  const probabilityOfMines = output[0];
+  return probabilityOfMines > 0.5; // Threshold can be adjusted
+
+  // Clean up
+  tensorImg.dispose();
+  resized.dispose();
+  batchedImg.dispose();
+  normalizedImg.dispose();
+  predictions.dispose();
 }
 
 // Verificar todas as imagens na página
