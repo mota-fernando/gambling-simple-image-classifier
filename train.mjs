@@ -10,11 +10,19 @@ async function carregarEConverterImagens(filePaths, label) {
 
   for (const filePath of filePaths) {
     try {
-      const imageBuffer = fs.readFileSync(filePath); // Lê a imagem do disco
-      const tensor = tf.node.decodeImage(imageBuffer) // Converte em tensor
+      const localPath = path.join("F:/work/bets/automines/downloaded_images", filePath.replace("/images/", ""));
+      console.log(`Tentando carregar: ${localPath}`);
+
+      if (!fs.existsSync(localPath)) {
+        console.error(`Arquivo não encontrado: ${localPath}`);
+        continue;
+      }
+
+      const imageBuffer = fs.readFileSync(localPath);
+      const tensor = tf.node.decodeImage(imageBuffer)
         .resizeNearestNeighbor([224, 224])
         .toFloat()
-        .div(255); // Normaliza
+        .div(255);
 
       imagens.push(tensor);
       labels.push(label);
