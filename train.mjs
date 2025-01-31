@@ -1,7 +1,8 @@
-// Função para carregar imagens e convertê-las em tensores
 import * as tf from "@tensorflow/tfjs-node";
 import fs from "fs";
 import path from "path";
+
+import { saveModel } from './modelSaver.js';
 
 // Função para carregar imagens e convertê-las em tensores
 async function carregarEConverterImagens(filePaths, label) {
@@ -65,7 +66,8 @@ async function treinarModelo() {
     return;
   }
 
-  const X = tf.concat([...dadosMines.imagens, ...dadosOthers.imagens]);
+  // Concatena as imagens e ajusta o formato para [num_imagens, 224, 224, 3]
+  const X = tf.stack([...dadosMines.imagens, ...dadosOthers.imagens]);
   const Y = tf.tensor1d([...dadosMines.labels, ...dadosOthers.labels]);
 
   // Criar um modelo simples
@@ -84,6 +86,10 @@ async function treinarModelo() {
   await modelo.fit(X, Y, { epochs: 10 });
 
   console.log("Modelo treinado!");
+
+  // Salvar o modelo
+  saveModel(modelo);
+
 }
 
 // Inicia o treinamento corretamente
