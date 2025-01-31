@@ -4,7 +4,7 @@ import * as mobilenet from "@tensorflow-models/mobilenet";
 // Carregar e treinar modelo
 async function carregarModelo() {
 
-  const modeloJSON = await fetch('path/to/your/model.json').then(res => res.json());
+  const modeloJSON = await fetch('saved_models/0_sequencial_1.json').then(res => res.json());
   const modelo = await tf.loadLayersModel(tf.io.fromMemory(modelJSON));
   return modelo;
   
