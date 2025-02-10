@@ -80,6 +80,7 @@ Save the JSON in a file named `data.json` in the same directory as the script:
         "imgSrc": null
     }
 ]
+````
 
 ## How to Run
 
